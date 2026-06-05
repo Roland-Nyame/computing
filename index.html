@@ -1,692 +1,193 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SmartSave Bank</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Inter', Arial, sans-serif;
-    }
-
-    :root {
-        --blue: #0a58ca;
-        --blue-dark: #084298;
-        --light: #f4f6f8;
-        --white: #ffffff;
-        --text: #1f2937;
-        --muted: #6b7280;
-        --card: #ffffff;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    body {
-        background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
-        color: var(--text);
-        min-height: 100vh;
-    }
-
-    header {
-        background: var(--blue);
-        color: var(--white);
-        padding: 28px 20px;
-        text-align: center;
-    }
-
-    header h1 {
-        font-size: 2.6rem;
-        margin-bottom: 10px;
-    }
-
-    header p {
-        font-size: 1rem;
-        max-width: 680px;
-        margin: auto;
-        color: rgba(255,255,255,0.86);
-    }
-
-    nav {
-        background: var(--blue-dark);
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-        padding: 14px 20px;
-    }
-
-    nav a {
-        color: var(--white);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.25s ease;
-    }
-
-    nav a:hover {
-        color: #dbeafe;
-    }
-
-    .container {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 40px 20px 60px;
-    }
-
-    .hero {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 30px;
-        align-items: center;
-        margin-bottom: 50px;
-    }
-
-    .hero-copy h2 {
-        font-size: 2.65rem;
-        line-height: 1.05;
-        margin-bottom: 20px;
-    }
-
-    .hero-copy p {
-        font-size: 1.05rem;
-        line-height: 1.8;
-        color: var(--muted);
-        margin-bottom: 28px;
-    }
-
-    .hero-copy .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-    }
-
-    .button-primary,
-    .button-secondary {
-        border: none;
-        border-radius: 999px;
-        padding: 14px 26px;
-        font-size: 0.98rem;
-        cursor: pointer;
-        transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-
-    .button-primary {
-        background: var(--blue);
-        color: var(--white);
-    }
-
-    .button-primary:hover {
-        background: #0c63e4;
-        transform: translateY(-1px);
-    }
-
-    .button-secondary {
-        background: rgba(10,88,202,0.1);
-        color: var(--blue-dark);
-    }
-
-    .button-secondary:hover {
-        background: rgba(10,88,202,0.16);
-    }
-
-    .hero-preview {
-        background: var(--white);
-        border-radius: 24px;
-        box-shadow: 0 24px 60px rgba(15,23,42,0.08);
-        padding: 30px;
-    }
-
-    .hero-preview h3 {
-        margin-bottom: 18px;
-        color: var(--blue-dark);
-    }
-
-    .hero-preview p {
-        color: var(--muted);
-        line-height: 1.7;
-        margin-bottom: 22px;
-    }
-
-    .hero-preview .balance-box {
-        background: linear-gradient(135deg, #0a58ca, #084298);
-        color: var(--white);
-        padding: 24px;
-        border-radius: 18px;
-        font-size: 1.1rem;
-        margin-bottom: 24px;
-        text-align: center;
-    }
-
-    .hero-preview .balance-box span {
-        font-size: 2rem;
-        display: block;
-        margin-top: 10px;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-    }
-
-    .stat {
-        background: #f8fafc;
-        border-radius: 16px;
-        padding: 18px 20px;
-        text-align: center;
-    }
-
-    .stat strong {
-        display: block;
-        font-size: 1.35rem;
-        margin-bottom: 8px;
-        color: var(--blue-dark);
-    }
-
-    .section-title {
-        text-align: center;
-        margin-bottom: 24px;
-    }
-
-    .section-title h2 {
-        font-size: 2rem;
-        margin-bottom: 12px;
-    }
-
-    .section-title p {
-        color: var(--muted);
-    }
-
-    .feature-grid,
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 24px;
-    }
-
-    .feature-card,
-    .info-card {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 18px 45px rgba(15,23,42,0.08);
-        border: 1px solid rgba(15,23,42,0.06);
-    }
-
-    .feature-card h3,
-    .info-card h3 {
-        margin-bottom: 14px;
-        color: var(--blue);
-    }
-
-    .feature-card p,
-    .info-card p {
-        color: var(--muted);
-        line-height: 1.7;
-    }
-
-    .banking-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 24px;
-        margin-top: 24px;
-    }
-
-    .banking-card {
-        background: var(--white);
-        border-radius: 18px;
-        padding: 24px;
-        box-shadow: 0 14px 32px rgba(15,23,42,0.08);
-        border: 1px solid rgba(15,23,42,0.05);
-    }
-
-    .banking-card h3 {
-        margin-bottom: 16px;
-        color: var(--blue-dark);
-    }
-
-    .banking-card label {
-        display: block;
-        margin: 14px 0 8px;
-        font-weight: 700;
-        color: var(--text);
-    }
-
-    .banking-card input {
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 12px;
-        border: 1px solid #d1d5db;
-        background: #f8fafc;
-        font-size: 0.98rem;
-    }
-
-    .banking-card button {
-        width: 100%;
-        margin-top: 14px;
-    }
-
-    .message {
-        margin-top: 26px;
-        text-align: center;
-        font-weight: 700;
-    }
-
-    .receipt {
-        margin-top: 20px;
-        padding: 22px;
-        border-radius: 18px;
-        border: 1px solid rgba(10,88,202,0.18);
-        background: rgba(255,255,255,0.95);
-        color: var(--text);
-        box-shadow: 0 16px 32px rgba(15,23,42,0.06);
-        line-height: 1.7;
-    }
-
-    .receipt strong {
-        display: block;
-        margin-bottom: 10px;
-        color: var(--blue-dark);
-    }
-
-    .sms-note {
-        margin-top: 12px;
-        padding-top: 10px;
-        border-top: 1px solid rgba(15,23,42,0.08);
-        color: #475569;
-        font-size: 0.95rem;
-    }
-
-    .success {
-        color: #16a34a;
-    }
-
-    .error {
-        color: #dc2626;
-    }
-
-    .contact-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 28px;
-        margin-top: 14px;
-    }
-
-    .contact-card {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 18px 40px rgba(15,23,42,0.07);
-        border: 1px solid rgba(15,23,42,0.06);
-    }
-
-    .contact-card h3 {
-        margin-bottom: 14px;
-    }
-
-    .contact-card p {
-        margin-bottom: 18px;
-        color: var(--muted);
-        line-height: 1.8;
-    }
-
-    .contact-card strong {
-        display: block;
-        margin-bottom: 6px;
-        color: var(--blue-dark);
-    }
-
-    footer {
-        background: #111827;
-        color: #d1d5db;
-        text-align: center;
-        padding: 22px 20px;
-        margin-top: 40px;
-    }
-
-    footer a {
-        color: #93c5fd;
-    }
-
-    @media (max-width: 960px) {
-        .hero {
-            grid-template-columns: 1fr;
-            gap: 24px;
-        }
-
-        .hero-preview {
-            padding: 24px;
-        }
-
-        .stats-grid,
-        .feature-grid,
-        .card-grid,
-        .banking-cards,
-        .contact-section {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 760px) {
-        .hero-copy h2 {
-            font-size: 2.1rem;
-        }
-
-        .hero-copy p,
-        .section-title p,
-        .feature-card p,
-        .info-card p,
-        .contact-card p {
-            font-size: 0.98rem;
-            line-height: 1.7;
-        }
-
-        .hero-copy .hero-actions {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .button-primary,
-        .button-secondary {
-            width: 100%;
-        }
-
-        .banking-card {
-            padding: 22px;
-        }
-    }
-
-    @media (max-width: 540px) {
-        header h1 {
-            font-size: 1.85rem;
-        }
-
-        nav {
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .container {
-            padding: 28px 16px 40px;
-        }
-
-        .hero {
-            gap: 20px;
-        }
-
-        .banking-card input {
-            padding: 14px 16px;
-        }
-
-        .hero-preview .balance-box {
-            padding: 20px;
-        }
-
-        .button-primary,
-        .button-secondary {
-            padding: 12px 18px;
-        }
-    }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoodHub - Local & Foreign Dishes Delivery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-<header>
-    <h1>SmartSave Bank</h1>
-    <p>Your trusted partner for savings, withdrawal, and affordable project loans in one easy online dashboard.</p>
-</header>
-
-<nav>
-    <a href="#home">Home</a>
-    <a href="#services">Services</a>
-    <a href="#banking">Banking</a>
-    <a href="#loans">Loans</a>
-    <a href="#contact">Contact</a>
-</nav>
-
-<main class="container">
-    <section id="home" class="hero">
-        <div class="hero-copy">
-            <h2>Save better, borrow smarter, and grow your next project.</h2>
-            <p>SmartSave Bank makes digital banking fast and secure so you can manage deposits, withdrawals, and loans from one simple page.</p>
-            <div class="hero-actions">
-                <button class="button-primary" onclick="document.getElementById('depositAmount').focus();">Start Saving</button>
-                <button class="button-secondary" onclick="document.getElementById('loanAmount').focus();">Request a Loan</button>
-            </div>
-        </div>
-        <div class="hero-preview">
-            <h3>Account Overview</h3>
-            <p>Track your balance, save for tomorrow, and access credit when your ideas need funding.</p>
-            <div class="balance-box">
-                Current Balance
-                <span id="balance">0.00</span>
-            </div>
-            <div class="stats-grid">
-                <div class="stat">
-                    <strong>2× Loan Limit</strong>
-                    Max credit based on savings
-                </div>
-                <div class="stat">
-                    <strong>Instant Updates</strong>
-                    See account changes right away
-                </div>
-                <div class="stat">
-                    <strong>Safe & Simple</strong>
-                    Designed for everyday users
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="section-title">
-        <h2>Banking services designed for you</h2>
-        <p>Explore everything SmartSave Bank offers to help you save, withdraw, and fund your projects confidently.</p>
-    </section>
-
-    <div class="feature-grid">
-        <div class="feature-card">
-            <h3>Secure Savings</h3>
-            <p>Build your balance in a protected environment with smooth deposits and fast account updates.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Flexible Withdrawals</h3>
-            <p>Withdraw exactly what you need without delay, as long as your balance covers the request.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Project Loans</h3>
-            <p>Request a loan up to 2× your savings and get approved immediately when you qualify.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Simple Tracking</h3>
-            <p>One dashboard keeps your balance and transaction actions visible and easy to update.</p>
-        </div>
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <p>Fast food delivery in Accra, Tema, Kasoa & nearby areas</p>
+      <p>Call / WhatsApp: +233 55 050 4133</p>
     </div>
+  </div>
 
-    <section id="banking" class="section-title" style="margin-top:56px;">
-        <h2>Manage your money</h2>
-        <p>Deposit, withdraw, and review your balance right here.</p>
+  <header class="main-header">
+    <div class="container header-content">
+      <a href="#home" class="logo"><span>Food</span>Hub</a>
+
+      <nav class="desktop-nav">
+        <a href="#home">Home</a>
+        <a href="#categories">Categories</a>
+        <a href="#products">Shop</a>
+        <a href="#checkout">Checkout</a>
+      </nav>
+
+      <button class="cart-btn" id="openCartBtn">
+        Cart <span id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="pill">Delicious Food Made Easy</span>
+          <h1>Authentic local and international dishes delivered to you.</h1>
+          <p>
+            Order traditional local delicacies, international cuisine, appetizers, 
+            main dishes, desserts, beverages and more from one convenient online food platform.
+          </p>
+
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search jollof, pizza, waakye, pasta..." />
+            <button id="searchBtn">Search</button>
+          </div>
+
+          <div class="hero-buttons">
+            <a href="#products" class="btn btn-primary">Start Shopping</a>
+            <button class="btn btn-outline" id="heroCartBtn">View Cart</button>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="delivery-card">
+            <div class="delivery-icon">🚚</div>
+            <h3>Express Food Delivery</h3>
+            <p>Order your favorite dishes and enjoy hot, fresh deliveries within supported areas.</p>
+          </div>
+
+          <div class="stats-grid">
+            <div><strong>200+</strong><span>Dishes</span></div>
+            <div><strong>Fast</strong><span>Delivery</span></div>
+            <div><strong>Fresh</strong><span>Quality</span></div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <div class="banking-cards">
-        <div class="banking-card">
-            <h3>Save Money</h3>
-            <label for="depositAmount">Amount</label>
-            <input type="number" id="depositAmount" placeholder="Enter amount" min="0" step="0.01">
-            <button class="button-primary" onclick="deposit()">Save</button>
+    <section class="section" id="categories">
+      <div class="container">
+        <div class="section-heading">
+          <span>Browse by Cuisine</span>
+          <h2>Find your favorite dishes easily</h2>
         </div>
-        <div class="banking-card">
-            <h3>Withdraw Money</h3>
-            <label for="withdrawAmount">Amount</label>
-            <input type="number" id="withdrawAmount" placeholder="Enter amount" min="0" step="0.01">
-            <button class="button-primary" onclick="withdraw()">Withdraw</button>
-        </div>
-        <div class="banking-card" id="loans">
-            <h3>Project Loan</h3>
-            <label for="loanAmount">Loan Amount</label>
-            <input type="number" id="loanAmount" placeholder="Enter amount" min="0" step="0.01">
-            <button class="button-primary" onclick="requestLoan()">Request Loan</button>
-            <p style="margin-top:14px; color: var(--muted);">You may request up to 2× your current savings balance.</p>
-        </div>
-    </div>
 
-    <div class="message" id="message"></div>
-    <div class="receipt" id="receipt"></div>
-
-    <section class="section-title" style="margin-top:60px;">
-        <h2>Why customers choose us</h2>
-        <p>We keep banking easy with transparent rules, rapid updates, and support you can trust.</p>
+        <div class="category-grid">
+          <button class="category-card active" data-category="all"><div>🍽️</div><h3>All Dishes</h3><p>Everything we offer</p></button>
+          <button class="category-card" data-category="Local"><div>🍲</div><h3>Local Dishes</h3><p>Traditional favorites</p></button>
+          <button class="category-card" data-category="Foreign"><div>🍕</div><h3>Foreign Dishes</h3><p>International cuisine</p></button>
+          <button class="category-card" data-category="MainCourse"><div>🥘</div><h3>Main Courses</h3><p>Hearty meals</p></button>
+          <button class="category-card" data-category="Appetizers"><div>🥗</div><h3>Appetizers</h3><p>Starters & sides</p></button>
+          <button class="category-card" data-category="Desserts"><div>🍰</div><h3>Desserts</h3><p>Sweet treats</p></button>
+          <button class="category-card" data-category="Beverages"><div>🥤</div><h3>Beverages</h3><p>Drinks & juices</p></button>
+          <button class="category-card" data-category="Snacks"><div>🍟</div><h3>Snacks</h3><p>Quick bites</p></button>
+        </div>
+      </div>
     </section>
 
-    <div class="card-grid">
-        <div class="info-card">
-            <h3>Trusted Performance</h3>
-            <p>Experience a clean interface that helps you make financial decisions faster and with confidence.</p>
+    <section class="section light-section" id="products">
+      <div class="container">
+        <div class="section-heading">
+          <span>Dish Menu</span>
+          <h2>Popular dishes available now</h2>
         </div>
-        <div class="info-card">
-            <h3>Smart Credit</h3>
-            <p>Loans are calculated plainly so you always know how much you can borrow based on your savings.</p>
-        </div>
-        <div class="info-card">
-            <h3>Always Accessible</h3>
-            <p>Whether you are at home or on the move, your account balance and actions are only a click away.</p>
-        </div>
-    </div>
 
-    <section id="contact" class="section-title" style="margin-top:60px;">
-        <h2>Get in touch</h2>
-        <p>Need help or want to learn more? Reach out to SmartSave Bank and we'll respond quickly.</p>
+        <div class="product-toolbar">
+          <p id="productResultText">Showing all products</p>
+          <select id="sortProducts">
+            <option value="default">Sort by default</option>
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+          </select>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+      </div>
     </section>
 
-    <div class="contact-section">
-        <div class="contact-card">
-            <h3>Contact details</h3>
-            <p>Our team is ready to support your savings goals and loan requests. Use the details below to connect.</p>
-            <strong>Email</strong>
-            <p>support@smartsavebank.com</p>
-            <strong>Phone</strong>
-            <p>+233 24 000 0000</p>
-            <strong>Office</strong>
-            <p>Accra, Ghana</p>
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <span>How It Works</span>
+          <h2>Order delicious food in three simple steps</h2>
         </div>
-        <div class="contact-card">
-            <h3>Quick support</h3>
-            <p>For fast help, email or call us directly. We'll answer questions about savings, withdrawals, and loan eligibility.</p>
+
+        <div class="steps-grid">
+          <article class="step-card"><div class="step-number">1</div><h3>Browse Dishes</h3><p>Explore our collection of local and international dishes.</p></article>
+          <article class="step-card"><div class="step-number">2</div><h3>Checkout</h3><p>Place your order with your delivery details and payment method.</p></article>
+          <article class="step-card"><div class="step-number">3</div><h3>Enjoy Delivery</h3><p>Your food is prepared fresh and delivered hot to your door.</p></article>
         </div>
+      </div>
+    </section>
+
+    <section class="section checkout-section" id="checkout">
+      <div class="container">
+        <div class="section-heading">
+          <span>Checkout</span>
+          <h2>Complete your food order</h2>
+        </div>
+
+        <div class="checkout-grid">
+          <form class="checkout-form" id="checkoutForm">
+            <h3>Customer Information</h3>
+
+            <div class="form-group"><label for="customerName">Full Name</label><input type="text" id="customerName" required placeholder="Enter full name" /></div>
+            <div class="form-group"><label for="customerPhone">Phone Number</label><input type="tel" id="customerPhone" required placeholder="Enter phone number" /></div>
+            <div class="form-group"><label for="customerEmail">Email Address</label><input type="email" id="customerEmail" placeholder="Enter email address" /></div>
+            <div class="form-group"><label for="deliveryAddress">Delivery Address</label><textarea id="deliveryAddress" required placeholder="Enter delivery address"></textarea></div>
+            <div class="form-group"><label for="paymentMethod">Payment Method</label><select id="paymentMethod" required><option value="">Select payment method</option><option value="Cash on Delivery">Cash on Delivery</option><option value="Mobile Money">Mobile Money</option><option value="Card Payment">Card Payment</option></select></div>
+
+            <button type="submit" class="btn btn-primary full-btn">Place Order</button>
+          </form>
+
+          <aside class="checkout-summary">
+            <h3>Order Summary</h3>
+            <div id="checkoutItems"></div>
+            <div class="summary-line"><span>Subtotal</span><strong id="checkoutSubtotal">GHS 0.00</strong></div>
+            <div class="summary-line"><span>Delivery Fee</span><strong id="checkoutDelivery">GHS 10.99</strong></div>
+            <div class="summary-line total"><span>Total</span><strong id="checkoutTotal">GHS 0.00</strong></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="receipt-modal" id="receiptModal">
+    <div class="receipt-modal-content">
+      <div class="receipt-actions no-print">
+        <button id="printReceiptBtn" class="btn btn-primary">Print Receipt</button>
+        <button id="closeReceiptBtn" class="btn btn-outline">Close</button>
+      </div>
+      <div class="receipt" id="receiptContent"></div>
     </div>
-</main>
+  </div>
 
-<footer>
-    © 2026 SmartSave Bank | Secure Digital Banking | Built for entrepreneurs and savers.
-</footer>
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h3>Your Cart</h3><button id="closeCartBtn">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Total</span><strong id="cartTotal">GHS 0.00</strong></div>
+      <a href="#checkout" class="btn btn-primary full-btn" id="checkoutBtn">Proceed to Checkout</a>
+    </div>
+  </aside>
 
-<script>
-    let balance = 0;
-    let loanBalance = 0;
+  <nav class="mobile-bottom-nav">
+    <a href="#home"><span>🏠</span>Home</a>
+    <a href="#categories"><span>📦</span>Categories</a>
+    <a href="#products"><span>🛒</span>Shop</a>
+    <button id="mobileCartBtn"><span>🧺</span>Cart</button>
+  </nav>
 
-    function updateBalance() {
-        document.getElementById('balance').innerText = balance.toFixed(2);
-    }
+  <a href="https://wa.me/233534386545" class="whatsapp-btn" target="_blank" rel="noopener">WhatsApp</a>
 
-    function showMessage(text, type) {
-        const msg = document.getElementById('message');
-        msg.innerText = text;
-        msg.className = 'message ' + type;
-    }
-
-    function showReceipt(title, details) {
-        const receipt = document.getElementById('receipt');
-        receipt.innerHTML = `<strong>${title}</strong>${details}`;
-    }
-
-    function deposit() {
-        const amount = Number(document.getElementById('depositAmount').value);
-        if (amount <= 0 || Number.isNaN(amount)) {
-            showMessage('Enter a valid amount.', 'error');
-            return;
-        }
-
-        balance += amount;
-        let repayment = 0;
-
-        if (loanBalance > 0) {
-            repayment = Math.min(balance, loanBalance);
-            balance -= repayment;
-            loanBalance -= repayment;
-        }
-
-        updateBalance();
-        showMessage('Savings added successfully. Money credited to your account.', 'success');
-
-        let receiptDetails = `
-            <div>Deposit: ₵${amount.toFixed(2)}</div>
-            ${repayment > 0 ? `<div>Loan repayment: ₵${repayment.toFixed(2)}</div>` : ''}
-            <div>Available balance: ₵${balance.toFixed(2)}</div>
-            ${loanBalance > 0 ? `<div>Outstanding loan: ₵${loanBalance.toFixed(2)}</div>` : ''}
-            <div class="sms-note">SMS: Your deposit of ₵${amount.toFixed(2)} was credited.${repayment > 0 ? ` ₵${repayment.toFixed(2)} was deducted immediately towards your loan.` : ''} Balance is ₵${balance.toFixed(2)}.</div>
-        `;
-        showReceipt('Deposit Receipt', receiptDetails);
-
-        document.getElementById('depositAmount').value = '';
-    }
-
-    function withdraw() {
-        const amount = Number(document.getElementById('withdrawAmount').value);
-        if (amount <= 0 || Number.isNaN(amount)) {
-            showMessage('Enter a valid amount.', 'error');
-            return;
-        }
-        if (amount > balance) {
-            showMessage('Insufficient balance.', 'error');
-            return;
-        }
-
-        balance -= amount;
-        updateBalance();
-        showMessage('Withdrawal successful.', 'success');
-
-        const receiptDetails = `
-            <div>Withdrawn: ₵${amount.toFixed(2)}</div>
-            <div>Available balance: ₵${balance.toFixed(2)}</div>
-            <div class="sms-note">SMS: ₵${amount.toFixed(2)} has been withdrawn from your account. Your remaining balance is ₵${balance.toFixed(2)}.</div>
-        `;
-        showReceipt('Withdrawal Receipt', receiptDetails);
-
-        document.getElementById('withdrawAmount').value = '';
-    }
-
-    function requestLoan() {
-        const amount = Number(document.getElementById('loanAmount').value);
-        const maxLoan = balance * 2;
-        if (amount <= 0 || Number.isNaN(amount)) {
-            showMessage('Enter a valid loan amount.', 'error');
-            return;
-        }
-        if (amount > maxLoan) {
-            showMessage('Loan denied. Increase your savings.', 'error');
-            return;
-        }
-
-        loanBalance += amount;
-        balance += amount;
-        updateBalance();
-        showMessage('Loan approved and credited to your account.', 'success');
-
-        const receiptDetails = `
-            <div>Loan amount credited: ₵${amount.toFixed(2)}</div>
-            <div>Outstanding loan: ₵${loanBalance.toFixed(2)}</div>
-            <div>Available balance: ₵${balance.toFixed(2)}</div>
-            <div class="sms-note">SMS: Your loan of ₵${amount.toFixed(2)} has been approved and credited. Your current balance is ₵${balance.toFixed(2)}.</div>
-        `;
-        showReceipt('Loan Confirmation', receiptDetails);
-
-        document.getElementById('loanAmount').value = '';
-    }
-</script>
+  <script src="app.js"></script>
 </body>
 </html>
